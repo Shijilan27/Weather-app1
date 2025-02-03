@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>weather</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+  .Day {
+      background-color: #71bbe9; /* Light blue */
+      color: #000;
+  }
+  .Night {
+      background-color: #353d3d; /* Dark slate gray */
+      color: #FFF;
+  }
+  .pic {
+      display: block;
+      margin-left: 100px ;
+      width: 20%;
+    }
+  .rt{
+    display: flex;
+    justify-content: left; /* Aligns horizontally */
+    align-items: center; /* Aligns vertically */
+    height: 50vh; /* Full height of the viewport */
+    
+  }
+  .ro{
+    text-align: center;
+  }
+  .box-container {
+  border: 2px solid #000; /* Black border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Space inside the box */
+  padding-right: 50px;
+  background-color: #f9f9f9; /* Light gray background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-top: 120px; /* Pushes the box down */
+  margin-right: 150px; /* Reduced space outside the box */
+  color:black
+}
+.error-dropdown {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 50px; /* Adjust based on your layout */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: #f8d7da; /* Light red background for error */
+            color: #721c24; /* Dark red text */
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            text-align: center;
+            z-index: 9999; /* Ensure it stays above other elements */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+.error-dropdown.show {
+            display: block; /* Show the dropdown */
+        }
+
+</style>
+
+<body class="{% if data.day_or_night %}{{ data.day_or_night }}{% else %}Day{% endif %}">
+  <nav class="row" style="background: grey; color: white;">
+    <div align="left"><h1 class="col-md-3 text-left">Weather Detector</h1></div>
+  </nav>
+  <br />
+  <br />
+  <<!-- Error Dropdown -->
+  {% if error_message %}
+  <div class="error-dropdown show" id="errorDropdown">{{ error_message }}</div>
+  {% endif %}
+  <center class="ro">
+    <form  id="weatherForm" action="" method="post" class="col-md-6 col-md-offset-3">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" class="form-control" name="city" placeholder="Search">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+        <form>
+  </center>
+  
+  <br/>
+  <br/>
+  <br/>
+  
+    <div class="rt">
+      {% if data.country_code %}
+    
+      {% if data.day_or_night == "Day" %}
+        <img class = "pic" align="left" src="https://png.pngtree.com/png-vector/20220621/ourmid/pngtree-partial-cloudy-daytime-weather-sun-png-image_5246442.png">
+        {% else %}
+        <img class = "pic" align="left" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShSXYVC3LQ29CEfbYd13_UbN3sgYI2Ftpa3A&s">
+        {% endif %}
+        <div class="col-md-6 col-md-offset-3 box-container">
+          <h1>{{data.city}}</h1>
+          <img src="{{ data.icon_url }}" alt="">
+            <h2><mark>{{data.desc}}</mark></h2>
+          <h3>Country code : {{data.country_code}}</h1>
+            <h4>Time : {{time}}</h4>
+            <h4>Date : {{date}}</h4>
+            <h4>Coordinates : {{data.coordinate}}</h4>
+            <h4>Temperature : {{data.temp}}</h4>
+            <h4>Pressure : {{data.pressure}} </h4>
+            <h4>Humidity : {{data.humidity}}</h4>
+        </div>
+      
+      {% endif %}
+    </div>
+</body>
+
+</html>
